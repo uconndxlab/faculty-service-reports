@@ -31,16 +31,21 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 
 export default {
     data: () => ({
         account_number: '',
         account_number_validation_rules: [
             v => !!v || 'Account Number is required',
-            v => (v && v.length > 7) || 'Please Enter a valid Account Number'
+            v => (v && v.length > 6) || 'Please Enter a valid Account Number'
         ]
     }),
+    computed: {
+        ...mapGetters({
+            last_account_number: 'getAccountNumber'
+        })
+    },
     methods: {
         ...mapMutations(['ASSIGN_ACCOUNT_NUMBER']),
         navigateToAccount() {
@@ -62,6 +67,11 @@ export default {
                 return this.$refs.enter_account_number_form.validate()
             }
             return false
+        }
+    },
+    mounted() {
+        if ( this.last_account_number ) {
+            this.account_number = this.last_account_number
         }
     }
 }

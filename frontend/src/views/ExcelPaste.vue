@@ -1,31 +1,37 @@
 <template>
     <div id="excel-paste">
-        <h1>Excel Paste</h1>
-        <p>Purpose of this experiment is to simulate the Payroll Data paste functionality into a tool, so we can start working with the data as a drop in to their workflow.</p>
-        <input type="text" @paste="onPaste" placeholder="Paste Here">
-        <p>Pasted Output:</p>
-        <pre>{{ pastedContent }}</pre>
+        <v-container>
+            <v-row
+                justify="center"
+            >
+                <v-col>
+                    <h1>Excel Paste</h1>
+                    <p>Purpose of this experiment is to simulate the Payroll Data paste functionality into a tool, so we can start working with the data as a drop in to their workflow.</p>
+                    <input type="text" @paste="onPaste" placeholder="Paste Here">
+                    <p>Pasted Output:</p>
+                    <pre>{{ pastedContent }}</pre>
 
-        <p>Pasted Table Structure:</p>
-        <table v-if="excelStructuredData && excelStructuredData.length > 0">
-            <thead>
-                <tr>
-                    <th v-for="(headerItem, index) in excelStructuredData[0]" :key="headerItem + index">
-                        {{ headerItem }}
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(row, i) in excelStructuredDataWithoutHeaders" :key="i">
-                    <td v-for="entry in row" :key="entry">{{ entry }}</td>
-                </tr>
-            </tbody>
-        </table>
+                    <p>Pasted Table Structure:</p>
+                    <table v-if="excelStructuredData && excelStructuredData.length > 0">
+                        <thead>
+                            <tr>
+                                <th v-for="(headerItem, index) in excelStructuredData[0]" :key="headerItem + index">
+                                    {{ headerItem }}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(row, i) in excelStructuredDataWithoutHeaders" :key="i">
+                                <td v-for="entry in row" :key="entry">{{ entry }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-        <p>Pasted Output (Assuming Excel):</p>
-        <pre v-if="excelStructuredData && excelStructuredData.length > 0" v-html="excelStructuredData"></pre>
-
-        <div class="spacer"></div>
+                    <p>Pasted Output (Assuming Excel):</p>
+                    <pre v-if="excelStructuredData && excelStructuredData.length > 0" v-html="excelStructuredData"></pre>
+                </v-col>
+            </v-row>
+        </v-container>
     </div>
 </template>
 
@@ -92,11 +98,5 @@ pre {
 table {
     text-align: left;
     margin: 0 auto;
-}
-
-div.spacer {
-    height: 300px;
-    display: block;
-    width: 100%;
 }
 </style>

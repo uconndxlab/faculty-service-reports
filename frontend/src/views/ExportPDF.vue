@@ -1,37 +1,47 @@
 <template>
     <div class="export-pdf-page">
-        <h1>Export PDF Tool</h1>
+        <v-container>
+            <v-row
+                justify="center"
+            >
+                <v-col>
+                    <h1>Export PDF Tool</h1>
 
-        <button
-            @click="writePDF()"
-        >Generate PDF</button>
+                    <v-btn
+                        type="primary"
+                        @click="writePDF()"
+                    >Generate PDF</v-btn>
 
-        <div class="preview">
-            <ul id="buckets_list">
-                <li
-                    v-for="buck in buckets"
-                    :key="buck.name"
-                >
-                    Name: {{ buck.name }}; Price: ${{ buck.price }}
-                </li>
-            </ul>
-            <ul id="riley_list">
-                <li
-                    v-for="ri in riley"
-                    :key="ri.jonsey"
-                >
-                    Riley: {{ ri.jonsey }}
-                </li>
-            </ul>
-            <ul id="get_after_it">
-                <li
-                    v-for="gai in get_after_it"
-                    :key="gai.wayne"
-                >
-                    Wayne: {{ gai.wayne }}
-                </li>
-            </ul>
-        </div>
+                    <div class="preview">
+                        <ul id="buckets_list">
+                            <li
+                                v-for="(buck, i) in buckets"
+                                :key="i"
+                            >
+                                Name: {{ buck.name }}; Price: ${{ buck.price }}
+                            </li>
+                        </ul>
+                        <ul id="riley_list">
+                            <li
+                                v-for="(ri, j) in riley"
+                                :key="j"
+                            >
+                                Riley: {{ ri.jonsey }}
+                            </li>
+                        </ul>
+                        <ul id="get_after_it">
+                            <li
+                                v-for="(gai, k) in get_after_it"
+                                :key="k"
+                            >
+                                Wayne: {{ gai.wayne }}
+                            </li>
+                        </ul>
+                    </div>
+                </v-col>
+            </v-row>
+        </v-container>
+        
     </div>
 </template>
 
