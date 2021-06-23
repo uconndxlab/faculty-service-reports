@@ -3,7 +3,7 @@
     <v-navigation-drawer
       app
     >
-      <v-list>
+      <v-list dense>
         <v-list-item
           v-for="nav_item in navigationLinks"
           :key="nav_item.name"
