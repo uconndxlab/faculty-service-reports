@@ -3,14 +3,6 @@
     <v-navigation-drawer
       app
     >
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="text-h6">Faculty Service Reports</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-divider></v-divider>
-
       <v-list>
         <v-list-item
           v-for="nav_item in navigationLinks"
@@ -30,7 +22,6 @@
         <v-list-group
           prepend-icon="mdi-hammer-screwdriver"
           no-action
-          v-if="accountCurrentlyRegistered"
         >
           <template v-slot:activator>
             <v-list-item-title>Tools</v-list-item-title>
@@ -84,6 +75,7 @@ export default {
 
   data: () => ({
     tools_links: [
+      { to: '/pay-period-calculator', name: 'Pay Period Calculator', icon: 'mdi-currency-usd' },
       { to: '/excel-paste', name: 'Excel Paste', icon: 'mdi-content-paste' },
       { to: '/export-pdf', name: 'Export PDF', icon: 'mdi-file-pdf'}
     ]

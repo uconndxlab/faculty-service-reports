@@ -21,6 +21,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "payroll-calculator" */ '../views/PayrollCalculator.vue')
   },
   {
+    path: '/pay-period-calculator',
+    name: 'pay-period-calculator',
+    component: () => import(/* webpackChunkName: "pay-period-calculator" */ '../views/PayPeriodCalculator.vue')
+  },
+  {
     path: '/excel-paste',
     name: 'Excel Paste',
     // route level code-splitting

@@ -36,19 +36,6 @@ export default {
     data: () => ({
 
     }),
-    props: ['summaryDetails'],
-    filters: {
-        currency: function(val) {
-            if ( !val ) {
-                return ''
-            }
-            const formatter = new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0
-            })
-            return formatter.format(val)
-        }
-    }
+    props: ['summaryDetails']
 }
 </script>

@@ -3,11 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
-import VueExcelEditor from 'vue-excel-editor'
+import globalFilters from './filters'
+
+globalFilters()
 
 Vue.config.productionTip = false
-
-Vue.use(VueExcelEditor)
 
 new Vue({
   router,
