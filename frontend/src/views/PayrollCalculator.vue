@@ -70,13 +70,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import PayPeriodCalculator from '@/components/PayPeriodCalculator.vue'
+
 export default {
     components: { PayPeriodCalculator },
     data: () => ({
         payPeriodCalculatorDialog: false,
-        gradPayPeriodsRemaining: 0,
-        nineTenFacultyPayPeriodsRemaining: 0,
         payrollEntriesHeaders: [
             {
                 text: 'Object Code',
@@ -117,46 +117,29 @@ export default {
                 sortable: false,
                 filterable: false
             }
-        ],
-        payrollEntries: [
-            {
-                object_code: '5250',
-                person: 'Person A',
-                outstanding_encum: 3063.19,
-                per_pay_period: 1458.66,
-                pay_period_currently_encumbered: 3.1,
-                additional_pay_periods: 0.00,
-                additional_to_be_encumbered: 0.00,
-            },
-            {
-                object_code: '5260',
-                person: 'Person B',
-                outstanding_encum: 3063.19,
-                per_pay_period: 1458.66,
-                pay_period_currently_encumbered: 0,
-                additional_pay_periods: 0.00,
-                additional_to_be_encumbered: 0.00
-            },
-            {
-                object_code: '5250',
-                person: 'Person A',
-                outstanding_encum: 3063.19,
-                per_pay_period: 1458.66,
-                pay_period_currently_encumbered: 2.1,
-                additional_pay_periods: 0.00,
-                additional_to_be_encumbered: 0.00
-            },
-            {
-                object_code: '5260',
-                person: 'Person B',
-                outstanding_encum: 3063.19,
-                per_pay_period: 1458.66,
-                pay_period_currently_encumbered: 2.1,
-                additional_pay_periods: 0.00,
-                additional_to_be_encumbered: 0.00
-            }
         ]
     }),
+    computed: {
+        ...mapGetters({
+            payrollEntries: 'getAccountSalaryTransactions'
+        }),
+        gradPayPeriodsRemaining: {
+            get() {
+                return this.$store.state.account.pay_periods_remaining.grad
+            },
+            set(val) {
+                this.$store.commit('UPDATE_GRAD_PAY_PERIOD', val)
+            }
+        },
+        nineTenFacultyPayPeriodsRemaining: {
+            get() {
+                return this.$store.state.account.pay_periods_remaining.nineTenFaculty
+            },
+            set(val) {
+                this.$store.commit('UPDATE_NINE_TEN_FACULTY_PAY_PERIOD', val)
+            }
+        }
+    },
     methods: {
         closeDialogs() {
             this.payPeriodCalculatorDialog = false

@@ -7,6 +7,10 @@ Vue.use(Vuex)
 const initialAccount = () => {
   return {
     number: '',
+    pay_periods_remaining: {
+      grad: 0,
+      nineTenFaculty: 0
+    },
     transaction_categories: {
       salary: {
         name: 'Salary',
@@ -69,6 +73,10 @@ const initialAccount = () => {
 const seedAccount = () => {
   return {
     number: '',
+    pay_periods_remaining: {
+      grad: 5.1,
+      nineTenFaculty: 6.2
+    },
     transaction_categories: {
       salary: {
         name: 'Salary',
@@ -77,7 +85,44 @@ const seedAccount = () => {
         encumbrance: 53002.41,
         available_balance: 47764.88,
         additional_encumbrance: 0,
-        transactions: []
+        transactions: [
+          {
+            object_code: '5250',
+            person: 'Person A',
+            outstanding_encum: 3063.19,
+            per_pay_period: 1458.66,
+            pay_period_currently_encumbered: 3.1,
+            additional_pay_periods: 0.00,
+            additional_to_be_encumbered: 0.00,
+          },
+          {
+            object_code: '5260',
+            person: 'Person B',
+            outstanding_encum: 3063.19,
+            per_pay_period: 1458.66,
+            pay_period_currently_encumbered: 0,
+            additional_pay_periods: 0.00,
+            additional_to_be_encumbered: 0.00
+          },
+          {
+            object_code: '5250',
+            person: 'Person A',
+            outstanding_encum: 3063.19,
+            per_pay_period: 1458.66,
+            pay_period_currently_encumbered: 2.1,
+            additional_pay_periods: 0.00,
+            additional_to_be_encumbered: 0.00
+          },
+          {
+            object_code: '5260',
+            person: 'Person B',
+            outstanding_encum: 3063.19,
+            per_pay_period: 1458.66,
+            pay_period_currently_encumbered: 2.1,
+            additional_pay_periods: 0.00,
+            additional_to_be_encumbered: 0.00
+          }
+        ]
       },
       fringe_benefits: {
         name: 'Fringe Benefits',
@@ -140,6 +185,12 @@ export default new Vuex.Store({
   mutations: {
     ASSIGN_ACCOUNT_NUMBER(state, val) {
       state.account.number = val
+    },
+    UPDATE_GRAD_PAY_PERIOD(state, val) {
+      state.account.pay_periods_remaining.grad = val
+    },
+    UPDATE_NINE_TEN_FACULTY_PAY_PERIOD(state, val) {
+      state.account.pay_periods_remaining.nineTenFaculty = val
     }
   },
   getters: {
@@ -172,6 +223,9 @@ export default new Vuex.Store({
         eq5000_partial_state,
         indirect_partial_state
       ]
+    },
+    getAccountSalaryTransactions(state) {
+      return state.account.transaction_categories.salary.transactions
     }
   },
   actions: {
