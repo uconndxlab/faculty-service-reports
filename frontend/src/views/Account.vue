@@ -31,6 +31,7 @@
 
                 <v-col sm="12">
                     <account-summary
+                        v-if="account_summary_details"
                         :summary-details="account_summary_details"
                     ></account-summary>
                 </v-col>
@@ -46,64 +47,14 @@ import dayjs from 'dayjs'
 import AccountSummary from '@/components/AccountSummary.vue'
 
 export default {
-    data: () => ({
-        account_summary_details: [
-            {
-                category: 'Salary',
-                budget: 61015.00,
-                actual: 55777.47,
-                encumbrance: 53002.51,
-                available_balance: 47764.88,
-                additional_encumbrance: 0
-            },
-            {
-                category: 'Fringe Benefits',
-                budget: 61015.00,
-                actual: 55777.47,
-                encumbrance: 53002.51,
-                available_balance: 47764.88,
-                additional_encumbrance: 0
-            },
-            {
-                category: 'Contractuals/Commodities',
-                budget: 61015.00,
-                actual: 55777.47,
-                encumbrance: 53002.51,
-                available_balance: 47764.88,
-                additional_encumbrance: 43222
-            },
-            {
-                category: 'Travel - Domestic',
-                budget: 61015.00,
-                actual: 55777.47,
-                encumbrance: 53002.51,
-                available_balance: 47764.88,
-                additional_encumbrance: 0
-            },
-            {
-                category: 'Equipment > $5,000',
-                budget: 61015.00,
-                actual: 55777.47,
-                encumbrance: 53002.51,
-                available_balance: 47764.88,
-                additional_encumbrance: 0
-            },
-            {
-                category: 'Indirect Cost',
-                budget: 61015.00,
-                actual: 55777.47,
-                encumbrance: 53002.51,
-                available_balance: 47764.88,
-                additional_encumbrance: 0
-            },
-        ]
-    }),
+    data: () => ({}),
     components: {
         AccountSummary
     },
     computed: {
         ...mapGetters({
-            account_number: 'getAccountNumber'
+            account_number: 'getAccountNumber',
+            account_summary_details: 'getAccountSummary'
         }),
         dateRangeText() {
             let d = dayjs()

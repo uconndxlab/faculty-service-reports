@@ -15,9 +15,9 @@
                 <tbody>
                     <tr
                         v-for="summary in summaryDetails"
-                        :key="summary.category"
+                        :key="summary.name"
                     >
-                        <td>{{ summary.category }}</td>
+                        <td>{{ summary.name }}</td>
                         <td>{{ summary.budget | currency }}</td>
                         <td>{{ summary.actual | currency }}</td>
                         <td>{{ summary.encumbrance | currency }}</td>
@@ -33,9 +33,7 @@
 
 <script>
 export default {
-    data: () => ({
-
-    }),
+    data: () => ({}),
     props: ['summaryDetails']
 }
 </script>
