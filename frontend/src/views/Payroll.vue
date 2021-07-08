@@ -77,7 +77,9 @@
                             {{ payPeriodsCurrentlyEncumbered(item) }}
                         </template>
                         <template v-slot:[`item.additional_pay_periods`]="{ item }">
+                            <span v-if="additionalPayPeriodsToEndofGrant(item) === 0">(</span>
                             {{ additionalPayPeriodsToEndofGrant(item) }}
+                            <span v-if="additionalPayPeriodsToEndofGrant(item) === 0">)</span>
                         </template>
                         <template v-slot:[`item.additional_to_be_encumbered`]="{ item }">
                             {{ additionalToBeEncumbered(item) | currency }}
@@ -203,10 +205,16 @@ export default {
                     break;
                 // Grads (AY only 8/23 to 5/22, paid in summer on 5231.  Not paid 2 weeks behind.)
                 case "5250":
-                    return +(this.gradPayPeriodsRemaining - this.payPeriodsCurrentlyEncumbered(item)).toPrecision(3)
+                    return this.zeroOrGreater(+(
+                        this.nineTenFacultyPayPeriodsRemaining
+                        - this.payPeriodsCurrentlyEncumbered(item)
+                    ).toPrecision(3))
                 // Payroll - Post Doctors
                 case "5260":
-                    return +(this.nineTenFacultyPayPeriodsRemaining - this.payPeriodsCurrentlyEncumbered(item)).toPrecision(3)
+                    return this.zeroOrGreater(+(
+                        this.gradPayPeriodsRemaining
+                        - this.payPeriodsCurrentlyEncumbered(item)
+                    ).toPrecision(3))
             }
 
             // @TODO Should return the calculation versus the number to grant end or fiscal year end, whichever is first, I think.
@@ -236,6 +244,12 @@ export default {
             } else {
                 this.payrollEncumberThroughDate = fisc.format('MM/DD/YYYY')
             }
+        },
+        zeroOrGreater( num ) {
+            if ( num < 0 ) {
+                return 0
+            }
+            return num
         }
     },
     mounted() {

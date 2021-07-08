@@ -79,8 +79,8 @@ const seedAccount = () => {
   return {
     number: '',
     pay_periods_remaining: {
-      grad: 5.1,
-      nineTenFaculty: 6.2
+      grad: 9.6,
+      nineTenFaculty: 2.1
     },
     date: {
       start: '01/01/2021',
@@ -108,8 +108,8 @@ const seedAccount = () => {
           {
             object_code: '5260',
             person: 'Person B',
-            outstanding_encum: 3063.19,
-            per_pay_period: 1458.66,
+            outstanding_encum: 2675.76,
+            per_pay_period: 668.94,
             pay_period_currently_encumbered: 0,
             additional_pay_periods: 0.00,
             additional_to_be_encumbered: 0.00
@@ -117,8 +117,8 @@ const seedAccount = () => {
           {
             object_code: '5250',
             person: 'Person A',
-            outstanding_encum: 3063.19,
-            per_pay_period: 1458.66,
+            outstanding_encum: 474.81,
+            per_pay_period: 226.09,
             pay_period_currently_encumbered: 2.1,
             additional_pay_periods: 0.00,
             additional_to_be_encumbered: 0.00
@@ -126,8 +126,8 @@ const seedAccount = () => {
           {
             object_code: '5260',
             person: 'Person B',
-            outstanding_encum: 3063.19,
-            per_pay_period: 1458.66,
+            outstanding_encum: 414.72,
+            per_pay_period: 103.69,
             pay_period_currently_encumbered: 2.1,
             additional_pay_periods: 0.00,
             additional_to_be_encumbered: 0.00
