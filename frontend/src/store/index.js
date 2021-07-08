@@ -11,6 +11,11 @@ const initialAccount = () => {
       grad: 0,
       nineTenFaculty: 0
     },
+    date: {
+      start: '01/01/2021',
+      end: '01/31/2021'
+    },
+    project_end: '01/01/2022',
     transaction_categories: {
       salary: {
         name: 'Salary',
@@ -77,6 +82,11 @@ const seedAccount = () => {
       grad: 5.1,
       nineTenFaculty: 6.2
     },
+    date: {
+      start: '01/01/2021',
+      end: '01/31/2021'
+    },
+    project_end: '01/01/2022',
     transaction_categories: {
       salary: {
         name: 'Salary',
@@ -176,7 +186,10 @@ const seedAccount = () => {
 const initialState = () => {
   return {
     // account: initialAccount()
-    account: seedAccount()
+    account: seedAccount(),
+    fiscal_encumber_through_dates: {
+      payroll: '06/03/2021'
+    }
   }
 }
 
@@ -226,6 +239,18 @@ export default new Vuex.Store({
     },
     getAccountSalaryTransactions(state) {
       return state.account.transaction_categories.salary.transactions
+    },
+    getReportStartDate(state) {
+      return state.account.date.start
+    },
+    getReportEndDate(state) {
+      return state.account.date.end
+    },
+    getFiscalEncumberThroughDatePayroll(state) {
+      return state.fiscal_encumber_through_dates.payroll
+    },
+    getProjectEndDate(state) {
+      return state.account.project_end
     }
   },
   actions: {

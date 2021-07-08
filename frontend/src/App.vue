@@ -94,7 +94,7 @@ export default {
       if ( this.account_number ) {
         let account_routes = [
           { to: '/account/' + this.account_number, name: 'Account Summary', icon: 'mdi-view-dashboard' },
-          { to: '/payroll-calculator', name: 'Payroll Calculator', icon: 'mdi-currency-usd' }
+          { to: '/payroll', name: 'Payroll', icon: 'mdi-currency-usd' }
         ]
         links.push(...account_routes)
       }

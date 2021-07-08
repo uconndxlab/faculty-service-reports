@@ -54,11 +54,14 @@ export default {
     computed: {
         ...mapGetters({
             account_number: 'getAccountNumber',
-            account_summary_details: 'getAccountSummary'
+            account_summary_details: 'getAccountSummary',
+            account_summary_start_date: 'getReportStartDate',
+            account_summary_end_date: 'getReportEndDate'
         }),
         dateRangeText() {
-            let d = dayjs()
-            let date_string = d.format('MMMM YYYY (M/01/YYYY - M/DD/YYYY)')
+            let s = dayjs( this.account_summary_start_date )
+            let date_string = s.format(`MMMM YYYY `)
+            date_string += `(${this.account_summary_start_date} - ${this.account_summary_end_date})`
             return date_string
         }
     },

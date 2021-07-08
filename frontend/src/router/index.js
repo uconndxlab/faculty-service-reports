@@ -16,9 +16,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "account" */ '../views/Account.vue')
   },
   {
-    path: '/payroll-calculator',
-    name: 'payroll-calulator',
-    component: () => import(/* webpackChunkName: "payroll-calculator" */ '../views/PayrollCalculator.vue')
+    path: '/payroll',
+    name: 'payroll',
+    component: () => import(/* webpackChunkName: "payroll" */ '../views/Payroll.vue')
   },
   {
     path: '/pay-period-calculator',
