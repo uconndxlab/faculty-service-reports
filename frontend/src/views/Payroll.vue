@@ -54,6 +54,14 @@
                             >Pay Period Calculator</v-btn>
                         </v-card-text>
                     </v-card>
+
+                    <v-card class="mt-5">
+                        <v-card-title>Totals</v-card-title>
+                        <v-card-text>
+                            <div class="text-h5">Salary: {{ salaryTotal | currency }}</div>
+                            <div class="text-h5">Fringe: {{ fringeTotal | currency }}</div>
+                        </v-card-text>
+                    </v-card>
                 </v-col>
             </v-row>
 
@@ -83,6 +91,13 @@
                         </template>
                         <template v-slot:[`item.additional_to_be_encumbered`]="{ item }">
                             {{ additionalToBeEncumbered(item) | currency }}
+                        </template>
+                        <template v-slot:[`item.fringe`]="{ item }">
+                            <v-checkbox
+                                v-model="item.fringe"
+                                @change="updateFringe( payrollEntries.indexOf(item), item.fringe )"
+                                :ripple="false"
+                            ></v-checkbox>
                         </template>
                     </v-data-table>
                 </v-col>
@@ -144,6 +159,12 @@ export default {
                 value: 'additional_to_be_encumbered',
                 sortable: false,
                 filterable: false
+            },
+            {
+                text: 'Fringe',
+                value: 'fringe',
+                sortable: false,
+                filterable: false
             }
         ],
         payrollEncumberThroughDate: ''
@@ -177,6 +198,22 @@ export default {
             let encumber_through_date = dayjs(this.payrollEncumberThroughDate, 'MM/DD/YYYY')
             let diff = encumber_through_date.diff(report_start, 'day', true)
             return ( diff / 14 ).toPrecision(3)
+        },
+        salaryTotal() {
+            return this.payrollEntries.reduce((a, b) => {
+                if ( b.fringe === false ) {
+                    return a + this.additionalToBeEncumbered(b)
+                }
+                return a
+            }, 0)
+        },
+        fringeTotal() {
+            return this.payrollEntries.reduce((a, b) => {
+                if ( b.fringe ) {
+                    return a + this.additionalToBeEncumbered(b)
+                }
+                return a
+            }, 0)
         }
     },
     methods: {
@@ -250,6 +287,12 @@ export default {
                 return 0
             }
             return num
+        },
+        updateFringe( index, value ) {
+            this.$store.commit('UPDATE_SALARY_FRINGE_BOOLEAN', {
+                index: index,
+                value: value
+            })
         }
     },
     mounted() {

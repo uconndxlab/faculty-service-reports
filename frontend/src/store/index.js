@@ -104,6 +104,7 @@ const seedAccount = () => {
             pay_period_currently_encumbered: 3.1,
             additional_pay_periods: 0.00,
             additional_to_be_encumbered: 0.00,
+            fringe: false
           },
           {
             object_code: '5260',
@@ -112,7 +113,8 @@ const seedAccount = () => {
             per_pay_period: 668.94,
             pay_period_currently_encumbered: 0,
             additional_pay_periods: 0.00,
-            additional_to_be_encumbered: 0.00
+            additional_to_be_encumbered: 0.00,
+            fringe: false
           },
           {
             object_code: '5250',
@@ -121,7 +123,8 @@ const seedAccount = () => {
             per_pay_period: 226.09,
             pay_period_currently_encumbered: 2.1,
             additional_pay_periods: 0.00,
-            additional_to_be_encumbered: 0.00
+            additional_to_be_encumbered: 0.00,
+            fringe: true
           },
           {
             object_code: '5260',
@@ -130,7 +133,8 @@ const seedAccount = () => {
             per_pay_period: 103.69,
             pay_period_currently_encumbered: 2.1,
             additional_pay_periods: 0.00,
-            additional_to_be_encumbered: 0.00
+            additional_to_be_encumbered: 0.00,
+            fringe: true
           }
         ]
       },
@@ -204,6 +208,11 @@ export default new Vuex.Store({
     },
     UPDATE_NINE_TEN_FACULTY_PAY_PERIOD(state, val) {
       state.account.pay_periods_remaining.nineTenFaculty = val
+    },
+    UPDATE_SALARY_FRINGE_BOOLEAN(state, val) {
+      if ( val.index && val.value ) {
+        state.account.transaction_categories.salary.transactions[val.index].fringe = val.value
+      }
     }
   },
   getters: {
