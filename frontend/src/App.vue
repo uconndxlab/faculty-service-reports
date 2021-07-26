@@ -57,7 +57,7 @@
         href="mailto:dx@uconn.edu"
         text
       >
-        <span>Support</span>
+        <span>Support &amp; Feedback</span>
       </v-btn>
     </v-app-bar>
 
