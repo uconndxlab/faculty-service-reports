@@ -1,5 +1,5 @@
 <template>
-    <div id="account">
+    <div id="account" class="mt-6">
         <v-container>
             <v-row
                 justify="center"

@@ -1,11 +1,13 @@
 <template>
-    <div class="export-pdf-page">
+    <div id="export-pdf-page" class="mt-6">
         <v-container>
             <v-row
                 justify="center"
             >
                 <v-col>
                     <h1>Export PDF Tool</h1>
+
+                    <p>This is purely experimental at the moment, there is no functional use besides testing PDF generation tools at the moment.</p>
 
                     <v-btn
                         type="primary"

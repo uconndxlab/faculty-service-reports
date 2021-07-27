@@ -8,7 +8,9 @@
                         <v-form
                             ref="enter_account_number_form"
                             lazy-validation
+                            @submit.prevent="navigateToAccount()"
                         >
+                            <p class="mb-3">Submit to retrieve account details for the given KFS account.</p>
                             <v-text-field
                                 label="KFS Account Number"
                                 placeholder="123456789"
@@ -21,8 +23,8 @@
                                 color="primary"
                                 :loading="lookup_button_loading"
                                 :disabled="lookup_button_loading"
-                                @click="navigateToAccount()"
                                 class="mt-2"
+                                type="submit"
                             >Lookup
                                 <template v-slot:loader>
                                     <span class="custom-loader">

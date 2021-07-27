@@ -1,5 +1,5 @@
 <template>
-    <div class="payroll-page">
+    <div id="payroll-page" class="mt-6">
         <v-container>
             <v-row
                 justify="center"
@@ -18,49 +18,79 @@
 
             <v-row
                 justify="center"
+                class="mt-5 mb-5"
             >
-                <v-col md="6">
+                <v-col>
                     <v-card>
-                        <v-card-title>Pay Period Assumptions</v-card-title>
-                        <v-card-text>
-                            <p>Report Start Date: {{ accountSummaryStartDate }}</p>
-                            <p>Project End: {{ projectEnd }}</p>
-                            <small>This will either be to project end, or fiscal year end, whichever first.</small>
-                            <p>Encumber Through Date: {{ payrollEncumberThroughDate }}</p>
-                            <p>Pay Periods Remaining for Report: {{ payPeriodsRemainingToEncumber }}</p>
-                            
-                            <v-btn @click="calculateEncumberThroughFiscalYearDate">Calculate Fiscal Year Date</v-btn>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-                <v-col md="6">
-                    <v-card>
-                        <v-card-title>Pay Periods Remaining</v-card-title>
-                        <v-card-text>
-                            <v-text-field
-                                label="Grads"
-                                v-model="gradPayPeriodsRemaining"
-                                placeholder="6.2"
-                            ></v-text-field>
-                            <v-text-field
-                                label="9/10 Faculty"
-                                v-model="nineTenFacultyPayPeriodsRemaining"
-                                placeholder="6.2"
-                            ></v-text-field>
-                            <v-btn
-                                color="primary"
-                                @click="payPeriodCalculatorDialog = true"
-                                small
-                            >Pay Period Calculator</v-btn>
-                        </v-card-text>
-                    </v-card>
+                        <v-row>
+                            <v-col
+                                md="4"
+                            >
+                                <v-card-title>Pay Period Assumptions</v-card-title>
+                                    <v-card-text>
+                                        <div>Report Start Date</div>
+                                        <p :class="metadataCSSClass">{{ accountSummaryStartDate }}</p>
 
-                    <v-card class="mt-5">
-                        <v-card-title>Totals</v-card-title>
-                        <v-card-text>
-                            <div class="text-h5">Salary: {{ salaryTotal | currency }}</div>
-                            <div class="text-h5">Fringe: {{ fringeTotal | currency }}</div>
-                        </v-card-text>
+                                        <div>Project End</div>
+                                        <p :class="metadataCSSClass">{{ projectEnd }}</p>
+
+                                        <div>Encumber Through Date</div>
+                                        <p :class="metadataCSSClass">{{ payrollEncumberThroughDate }}
+                                            <v-tooltip bottom>
+                                                <template v-slot:activator="{ on, attrs }">
+                                                    <v-icon
+                                                        color="primary"
+                                                        v-bind="attrs"
+                                                        v-on="on"
+                                                    >
+                                                        mdi-help-circle
+                                                    </v-icon>
+                                                </template>
+                                                <span>This will either be to project end, or fiscal year end, whichever first.</span>
+                                            </v-tooltip>
+                                        </p>
+                                    </v-card-text>
+                            </v-col>
+                            <v-col
+                                md="3"
+                            >
+                                <v-card-title>Pay Periods Remaining</v-card-title>
+
+                                <v-card-text>
+                                    <div>Total for Report</div>
+                                    <p :class="metadataCSSClass">{{ payPeriodsRemainingToEncumber }}</p>
+
+                                    <v-text-field
+                                        label="Adjusted for Grads"
+                                        v-model="gradPayPeriodsRemaining"
+                                        placeholder="6.2"
+                                    ></v-text-field>
+                                    <v-text-field
+                                        label="Adjusted for 9/10 Faculty"
+                                        v-model="nineTenFacultyPayPeriodsRemaining"
+                                        placeholder="6.2"
+                                    ></v-text-field>
+                                    <v-btn
+                                        color="primary"
+                                        @click="payPeriodCalculatorDialog = true"
+                                        small
+                                    >Pay Period Calculator</v-btn>
+                                </v-card-text>
+                            </v-col>
+                            <v-col
+                                md="3"
+                                offset-md="1"
+                            >
+                                <v-card-title>Totals</v-card-title>
+                                <v-card-text>
+                                    <div>Salary</div>
+                                    <p :class="metadataCSSClass">{{ salaryTotal | currency }}</p>
+
+                                    <div>Fringe</div>
+                                    <p :class="metadataCSSClass">{{ fringeTotal | currency }}</p>
+                                </v-card-text>
+                            </v-col>
+                        </v-row>
                     </v-card>
                 </v-col>
             </v-row>
@@ -69,6 +99,8 @@
                 justify="center"
             >
                 <v-col>
+                    <p>PP = Pay Period</p>
+
                     <v-data-table
                         :headers="payrollEntriesHeaders"
                         :items="payrollEntries"
@@ -119,6 +151,7 @@ dayjs.extend(isSameOrBefore)
 export default {
     components: { PayPeriodCalculator },
     data: () => ({
+        metadataCSSClass: 'text-h6 text--primary',
         payPeriodCalculatorDialog: false,
         payrollEntriesHeaders: [
             {
@@ -143,13 +176,13 @@ export default {
                 filterable: false
             },
             {
-                text: 'Pay Period Currently Encumbered',
+                text: 'PP Currently Encumbered',
                 value: 'pay_period_currently_encumbered',
                 sortable: false,
                 filterable: false
             },
             {
-                text: 'Additional Pay Periods to End of Grant',
+                text: 'Additional PP to End',
                 value: 'additional_pay_periods',
                 sortable: false,
                 filterable: false

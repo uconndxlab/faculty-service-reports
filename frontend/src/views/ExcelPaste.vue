@@ -1,5 +1,5 @@
 <template>
-    <div id="excel-paste">
+    <div id="excel-paste" class="mt-6">
         <v-container>
             <v-row
                 justify="center"

@@ -1,5 +1,5 @@
 <template>
-    <div class="pay-period-calculator-page">
+    <div id="pay-period-calculator-page" class="mt-6">
         <v-container>
             <v-row
                 justify="center"
