@@ -290,7 +290,7 @@ export default {
             // @TODO Should return the calculation versus the number to grant end or fiscal year end, whichever is first, I think.
             // Payroll is encumbered through June 3rd, 2021 (assuming it is the first pay period end in June) (10,11,12 month employees).  Knowing this, we can probably estimate the end date.
             // 9 month faculty and grads should be encumbered through 5/22.  Seems to be the start of the pay period that ends in June.
-            return +(this.gradPayPeriodsRemaining - this.payPeriodsCurrentlyEncumbered(item)).toPrecision(3)           
+            return +(this.payPeriodsRemainingToEncumber - this.payPeriodsCurrentlyEncumbered(item)).toPrecision(3)           
         },
         additionalToBeEncumbered( item ) {
             return +(this.additionalPayPeriodsToEndofGrant(item) * item.per_pay_period)
