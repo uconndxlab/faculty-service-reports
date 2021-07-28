@@ -6,8 +6,12 @@
             >
                 <v-col>
                     <h1>Excel Paste</h1>
-                    <p>Purpose of this experiment is to simulate the Payroll Data paste functionality into a tool, so we can start working with the data as a drop in to their workflow.</p>
-                    <input type="text" @paste="onPaste" placeholder="Paste Here">
+
+                    <test-data-warning
+                        header-message="This is a test tool."
+                        body-message="Purpose of this experiment is to simulate the Payroll Data paste functionality into a tool, so we can start working with the data as a drop in to their workflow."
+                    ></test-data-warning>
+                    <input type="text" @paste="onPaste" placeholder="Paste Here" class="mt-4">
                     <p>Pasted Output:</p>
                     <pre>{{ pastedContent }}</pre>
 
@@ -36,8 +40,10 @@
 </template>
 
 <script>
+import TestDataWarning from '@/components/TestDataWarning.vue'
 export default {
     name: "Excel-Paste",
+    components: { TestDataWarning },
     data() {
         return {
             pastedContent: ''

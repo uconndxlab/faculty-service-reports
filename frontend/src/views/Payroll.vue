@@ -9,6 +9,12 @@
                 </v-col>
             </v-row>
 
+            <v-row>
+                <v-col sm="12" v-if="fake">
+                    <test-data-warning></test-data-warning>
+                </v-col>
+            </v-row>
+
             <v-dialog
                 v-model="payPeriodCalculatorDialog"
                 width="600"
@@ -141,6 +147,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import PayPeriodCalculator from '@/components/PayPeriodCalculator.vue'
+import TestDataWarning from '@/components/TestDataWarning.vue'
 import dayjs from 'dayjs'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import dayjsBusinessDays from 'dayjs-business-days'
@@ -149,8 +156,9 @@ dayjs.extend(dayjsBusinessDays)
 dayjs.extend(isSameOrBefore)
 
 export default {
-    components: { PayPeriodCalculator },
+    components: { PayPeriodCalculator, TestDataWarning },
     data: () => ({
+        fake: true,
         metadataCSSClass: 'text-h6 text--primary',
         payPeriodCalculatorDialog: false,
         payrollEntriesHeaders: [

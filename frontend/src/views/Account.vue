@@ -4,7 +4,19 @@
             <v-row
                 justify="center"
             >
+                <v-col>
+                    <h1 class="text-h3">Account Summary</h1>
+                </v-col>
+            </v-row>
+
+            <v-row
+                justify="center"
+            >
+                <v-col sm="12" v-if="fake">
+                    <test-data-warning></test-data-warning>
+                </v-col>
                 <v-col md="7">
+                    
                     <v-card>
                         <v-card-title class="text-h6">Account: {{ account_number }}</v-card-title>
                         <v-card-text>
@@ -45,11 +57,15 @@
 import { mapGetters, mapMutations } from 'vuex'
 import dayjs from 'dayjs'
 import AccountSummary from '@/components/AccountSummary.vue'
+import TestDataWarning from '@/components/TestDataWarning.vue'
 
 export default {
-    data: () => ({}),
+    data: () => ({
+        fake: true
+    }),
     components: {
-        AccountSummary
+        AccountSummary,
+        TestDataWarning
     },
     computed: {
         ...mapGetters({

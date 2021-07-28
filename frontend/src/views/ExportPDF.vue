@@ -7,7 +7,11 @@
                 <v-col>
                     <h1>Export PDF Tool</h1>
 
-                    <p>This is purely experimental at the moment, there is no functional use besides testing PDF generation tools at the moment.</p>
+                    <test-data-warning
+                        header-message="This is a test tool."
+                        body-message="This is purely experimental at the moment, there is no functional use besides testing PDF generation tools at the moment."
+                        class="mb-4"
+                    ></test-data-warning>
 
                     <v-btn
                         type="primary"
@@ -49,8 +53,10 @@
 
 <script>
 import { jsPDF } from "jspdf"
+import TestDataWarning from '@/components/TestDataWarning.vue'
 
 export default {
+    components: { TestDataWarning },
     data: () => ({
         buckets: [
             { name: 'BK', price: "12.89" },
