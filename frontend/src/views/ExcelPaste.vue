@@ -11,28 +11,19 @@
                         header-message="This is a test tool."
                         body-message="Purpose of this experiment is to simulate the Payroll Data paste functionality into a tool, so we can start working with the data as a drop in to their workflow."
                     ></test-data-warning>
-                    <input type="text" @paste="onPaste" placeholder="Paste Here" class="mt-4">
-                    <p>Pasted Output:</p>
-                    <pre>{{ pastedContent }}</pre>
 
-                    <p>Pasted Table Structure:</p>
-                    <table v-if="excelStructuredData && excelStructuredData.length > 0">
-                        <thead>
-                            <tr>
-                                <th v-for="(headerItem, index) in excelStructuredData[0]" :key="headerItem + index">
-                                    {{ headerItem }}
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(row, i) in excelStructuredDataWithoutHeaders" :key="i">
-                                <td v-for="entry in row" :key="entry">{{ entry }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <v-textarea @paste="onPaste($event)" placeholder="Paste Here" class="mt-4"></v-textarea>
 
-                    <p>Pasted Output (Assuming Excel):</p>
-                    <pre v-if="excelStructuredData && excelStructuredData.length > 0" v-html="excelStructuredData"></pre>
+                    <p v-if="hasProperHeaders">Proper Header Rows Detected!</p>
+                    <p v-else>Incorrect Header Rows.</p>
+
+                    <h2>Pasted Table Data</h2>
+
+                    <v-data-table
+                        :headers="standard_table_headers"
+                        :items="dataTablesItems"
+                        :hide-default-footer="true"
+                    ></v-data-table>
                 </v-col>
             </v-row>
         </v-container>
@@ -46,17 +37,62 @@ export default {
     components: { TestDataWarning },
     data() {
         return {
-            pastedContent: ''
+            pastedContent: '',
+            standard_table_headers: [
+                {
+                    text: 'ACCOUNT_NBR',
+                    align: 'start',
+                    value: 'ACCOUNT_NBR'
+                },
+                {
+                    text: 'ROLLUP_ID',
+                    value: 'ROLLUP_ID'
+                },
+                {
+                    text: 'FIN_OBJECT_CD',
+                    value: 'FIN_OBJECT_CD'
+                },
+                {
+                    text: 'Name',
+                    value: 'Name'
+                },
+                {
+                    text: 'OUTSTANDING_ENC',
+                    value: 'OUTSTANDING_ENC'
+                },
+                {
+                    text: 'ACCOUNT_NM',
+                    value: 'ACCOUNT_NM'
+                },
+                {
+                    text: 'ACCT_SPVSR_NM',
+                    value: 'ACCT_SPVSR_NM'
+                },
+                {
+                    text: 'ORG_NM',
+                    value: 'ORG_NM'
+                },
+                {
+                    text: 'ACCT_EFFECT_DT',
+                    value: 'ACCT_EFFECT_DT'
+                },
+                {
+                    text: 'ACCT_EXPIRATION_DT',
+                    value: 'ACCT_EXPIRATION_DT'
+                },
+                {
+                    text: 'Sponsor',
+                    value: 'Sponsor'
+                }
+            ]
         }
     },
     methods: {
-        onPaste() {
+        onPaste(event) {
             let clipboardData = window.clipboardData || event.clipboardData || event.originalEvent && event.originalEvent.clipboardData
 
             // From what I can tell, older browsers support the former, and newer browsers support text/plain
             let pastedText = clipboardData.getData('Text') || clipboardData.getData('text/plain')
-
-            console.log(pastedText)
 
             this.pastedContent = pastedText
         }
@@ -85,10 +121,47 @@ export default {
             })
             return row_data_with_cols
         },
+        hasProperHeaders() {
+            if ( Array.isArray(this.excelStructuredData) && this.excelStructuredData.length > 0 ) {
+                let a = this.excelStructuredData[0]
+                if ( Array.isArray(a) && a.length > 0 ) {
+
+                    // Only return the headers if we have the proper headers from the existing paste workflow, which starts with ACCOUNT_NBR.
+                    if ( a[0] === 'ACCOUNT_NBR' ) {
+                        return true
+                    }
+                }
+            }
+            return false
+        },
         excelStructuredDataWithoutHeaders() {
-            let a = this.excelStructuredData
-            a.shift()
-            return a
+            if ( Array.isArray(this.excelStructuredData) && this.excelStructuredData.length > 0 ) {
+                let a = Array.from(this.excelStructuredData)
+                a.shift()
+                return a
+            }
+            return []
+        },
+        excelStructuredDataHeaders() {
+            if ( this.hasProperHeaders ) {
+                return this.excelStructuredData[0]
+            }
+            return []
+        },
+        dataTablesItems() {
+            let data = Array.from(this.excelStructuredDataWithoutHeaders)
+            let headers = Array.from(this.excelStructuredDataHeaders)
+            let data_tables_objects = data.map( (a) => {
+                let b = {}
+                headers.forEach( (h, index) => {
+                    b[h] = a[index]
+                })
+                return b
+            })
+            if ( data_tables_objects ) {
+                return data_tables_objects
+            }
+            return []
         }
     }
 }
