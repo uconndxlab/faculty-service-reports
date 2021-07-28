@@ -97,6 +97,8 @@ export default {
           { to: '/payroll', name: 'Payroll', icon: 'mdi-currency-usd' }
         ]
         links.push(...account_routes)
+      } else {
+        links.push({ to: '/payroll', name: 'Payroll', icon: 'mdi-currency-usd' })
       }
       return links
     }

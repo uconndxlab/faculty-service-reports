@@ -24,6 +24,14 @@
                         :items="dataTablesItems"
                         :hide-default-footer="true"
                     ></v-data-table>
+
+                    <v-btn
+                        color="primary"
+                        class="mt-6" 
+                        v-if="hasProperHeaders"
+                        @click="commitToPayroll">
+                        Commit Data to Payroll
+                    </v-btn>
                 </v-col>
             </v-row>
         </v-container>
@@ -32,6 +40,8 @@
 
 <script>
 import TestDataWarning from '@/components/TestDataWarning.vue'
+import { mapMutations } from 'vuex'
+
 export default {
     name: "Excel-Paste",
     components: { TestDataWarning },
@@ -88,6 +98,9 @@ export default {
         }
     },
     methods: {
+        ...mapMutations({
+            updatePayrollEntries: 'UPDATE_PAYROLL_ENTRIES_FROM_PASTE'
+        }),
         onPaste(event) {
             let clipboardData = window.clipboardData || event.clipboardData || event.originalEvent && event.originalEvent.clipboardData
 
@@ -95,6 +108,10 @@ export default {
             let pastedText = clipboardData.getData('Text') || clipboardData.getData('text/plain')
 
             this.pastedContent = pastedText
+        },
+        commitToPayroll() {
+            this.updatePayrollEntries( this.dataTablesItems )
+            this.$router.push('/payroll')
         }
     },
     computed: {

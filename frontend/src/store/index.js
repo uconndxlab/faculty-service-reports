@@ -213,6 +213,23 @@ export default new Vuex.Store({
       if ( val.index && val.value ) {
         state.account.transaction_categories.salary.transactions[val.index].fringe = val.value
       }
+    },
+    UPDATE_PAYROLL_ENTRIES_FROM_PASTE(state, val) {
+      if ( Array.isArray(val) && val.length > 0 && val[0].ACCOUNT_NBR ) {
+        let new_vals = val.map( (a) => {
+          return {
+            object_code: a.FIN_OBJECT_CD,
+            person: a.Name,
+            outstanding_encum: a.OUTSTANDING_ENC,
+            per_pay_period: 0,
+            pay_period_currently_encumbered: 0,
+            additional_pay_periods: 0.00,
+            additional_to_be_encumbered: 0.00,
+            fringe: a.ROLLUP_ID === 'SALAR' ? false : true
+          }
+        })
+        state.account.transaction_categories.salary.transactions = new_vals
+      }
     }
   },
   getters: {
