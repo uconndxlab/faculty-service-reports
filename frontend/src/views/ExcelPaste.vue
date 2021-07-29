@@ -69,7 +69,6 @@
                                             <v-currency-field
                                                 v-model="editEntries[index].PER_PAY_PERIOD"
                                                 :label="e.Name + ' (' + readableRollup(e.ROLLUP_ID) + ') Per Pay Period'"
-                                                prepend-inner-icon="mdi-currency-usd"
                                             ></v-currency-field>
                                         </v-col>
                                     </v-row>

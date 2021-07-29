@@ -13,6 +13,7 @@ Vue.config.productionTip = false
 
 Vue.component('v-text-field', VTextField)
 Vue.use(VCurrencyField, {
+  currency: 'USD',
   locale: 'en',
   decimalLength: 2,
   autoDecimalMode: true,
