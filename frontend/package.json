@@ -12,6 +12,7 @@
     "dayjs": "^1.10.5",
     "dayjs-business-days": "^1.0.4",
     "jspdf": "^2.3.1",
+    "v-currency-field": "^3.1.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuetify": "^2.4.0",

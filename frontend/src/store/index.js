@@ -221,7 +221,7 @@ export default new Vuex.Store({
             object_code: a.FIN_OBJECT_CD,
             person: a.Name,
             outstanding_encum: a.OUTSTANDING_ENC,
-            per_pay_period: 0,
+            per_pay_period: a.PER_PAY_PERIOD,
             pay_period_currently_encumbered: 0,
             additional_pay_periods: 0.00,
             additional_to_be_encumbered: 0.00,
