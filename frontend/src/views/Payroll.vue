@@ -55,6 +55,9 @@
                                                 <span>This will either be to project end, or fiscal year end, whichever first.</span>
                                             </v-tooltip>
                                         </p>
+
+                                        <div>9 Month/Grad Encumber Through Date</div>
+                                        <p :class="metadataCSSClass">{{ nineMonthPayrollEncumberThroughDate }}</p>
                                     </v-card-text>
                             </v-col>
                             <v-col
@@ -66,7 +69,7 @@
                                     <div>Total for Report</div>
                                     <p :class="metadataCSSClass">{{ payPeriodsRemainingToEncumber }}</p>
 
-                                    <v-text-field
+                                    <!-- <v-text-field
                                         label="Adjusted for Grads"
                                         v-model="gradPayPeriodsRemaining"
                                         placeholder="6.2"
@@ -75,6 +78,11 @@
                                         label="Adjusted for 9/10 Faculty"
                                         v-model="nineTenFacultyPayPeriodsRemaining"
                                         placeholder="6.2"
+                                    ></v-text-field> -->
+                                    <v-text-field
+                                        label="Adjusted for Grads &amp; 9/10"
+                                        :value="nineMonthPayPeriodsRemainingToEncumber"
+                                        disabled
                                     ></v-text-field>
                                     <v-btn
                                         color="primary"
@@ -208,7 +216,8 @@ export default {
                 filterable: false
             }
         ],
-        payrollEncumberThroughDate: ''
+        payrollEncumberThroughDate: '',
+        nineMonthPayrollEncumberThroughDate: ''
     }),
     computed: {
         ...mapGetters({
@@ -216,6 +225,7 @@ export default {
             accountSummaryStartDate: 'getReportStartDate',
             accountSummaryEndDate: 'getReportEndDate',
             payrollFiscalEncumberThroughDate: 'getFiscalEncumberThroughDatePayroll',
+            nineMonthPayrollFiscalEncumberThroughDate: 'getFiscalEncumberThroughDateNineMonthPayroll',
             projectEnd: 'getProjectEndDate'
         }),
         gradPayPeriodsRemaining: {
@@ -237,6 +247,12 @@ export default {
         payPeriodsRemainingToEncumber() {
             let report_start = dayjs(this.accountSummaryStartDate, 'MM/DD/YYYY')
             let encumber_through_date = dayjs(this.payrollEncumberThroughDate, 'MM/DD/YYYY')
+            let diff = encumber_through_date.diff(report_start, 'day', true)
+            return ( diff / 14 ).toPrecision(3)
+        },
+        nineMonthPayPeriodsRemainingToEncumber() {
+            let report_start = dayjs(this.accountSummaryStartDate, 'MM/DD/YYYY')
+            let encumber_through_date = dayjs(this.nineMonthPayrollEncumberThroughDate, 'MM/DD/YYYY')
             let diff = encumber_through_date.diff(report_start, 'day', true)
             return ( diff / 14 ).toPrecision(3)
         },
@@ -284,13 +300,13 @@ export default {
                 // Grads (AY only 8/23 to 5/22, paid in summer on 5231.  Not paid 2 weeks behind.)
                 case "5250":
                     return this.zeroOrGreater(+(
-                        this.nineTenFacultyPayPeriodsRemaining
+                        this.nineMonthPayPeriodsRemainingToEncumber
                         - this.payPeriodsCurrentlyEncumbered(item)
                     ).toPrecision(3))
                 // Payroll - Post Doctors
                 case "5260":
                     return this.zeroOrGreater(+(
-                        this.gradPayPeriodsRemaining
+                        this.nineMonthPayPeriodsRemainingToEncumber
                         - this.payPeriodsCurrentlyEncumbered(item)
                     ).toPrecision(3))
             }
@@ -323,6 +339,24 @@ export default {
                 this.payrollEncumberThroughDate = fisc.format('MM/DD/YYYY')
             }
         },
+        calculateEmcumberThroughFiscalYearDateNineMonth() {
+            let d = dayjs(this.accountSummaryStartDate, 'MM/DD/YYYY')
+            let projectEnd = dayjs(this.projectEnd, 'MM/DD/YYYY')
+            let fisc = dayjs(this.nineMonthPayrollFiscalEncumberThroughDate)
+
+            if ( d.isSameOrBefore(fisc) ) {
+                console.log('In the correct fiscal year for 9mo')
+            } else {
+                console.log('Report date is after fiscal, so we need the next year.')
+                fisc.add(1, 'year')
+            }
+
+            if ( projectEnd.isBefore(fisc) ) {
+                this.nineMonthPayrollEncumberThroughDate = projectEnd.format('MM/DD/YYYY')
+            } else {
+                this.nineMonthPayrollEncumberThroughDate = fisc.format('MM/DD/YYYY')
+            }
+        },
         zeroOrGreater( num ) {
             if ( num < 0 ) {
                 return 0
@@ -338,6 +372,7 @@ export default {
     },
     mounted() {
         this.calculateEncumberThroughFiscalYearDate()
+        this.calculateEmcumberThroughFiscalYearDateNineMonth()
     }
 }
 </script>

@@ -192,7 +192,8 @@ const initialState = () => {
     // account: initialAccount()
     account: seedAccount(),
     fiscal_encumber_through_dates: {
-      payroll: '06/03/2021'
+      payroll: '06/03/2021',
+      nine_month_payroll: '05/22/2021'
     }
   }
 }
@@ -277,6 +278,9 @@ export default new Vuex.Store({
     },
     getProjectEndDate(state) {
       return state.account.project_end
+    },
+    getFiscalEncumberThroughDateNineMonthPayroll(state) {
+      return state.fiscal_encumber_through_dates.nine_month_payroll
     }
   },
   actions: {
