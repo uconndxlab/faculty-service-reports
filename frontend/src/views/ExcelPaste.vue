@@ -29,9 +29,15 @@
                         </template>
                     </v-data-table>
 
+                    <v-alert
+                        type="warning"
+                        v-if="showPayPeriodMissingWarning"
+                        class="mb-1 mt-3"
+                    >Pay Period Information must be completely filled out before submitting to the payroll section.</v-alert>
+
                     <v-btn
                         color="primary"
-                        class="mt-6 mr-3"
+                        class="mt-3 mr-3"
                         v-if="hasProperHeaders()"
                         @click="editPerPayPeriodSalaries()"
                     >
@@ -40,11 +46,13 @@
 
                     <v-btn
                         color="primary"
-                        class="mt-6" 
+                        class="mt-3" 
                         v-if="hasProperHeaders()"
                         @click="commitToPayroll()">
                         Commit Data to Payroll
                     </v-btn>
+
+                    
 
 
                     <v-dialog
@@ -63,7 +71,7 @@
                                     <v-row>
                                         <v-col
                                             v-for="(e, index) in editEntries"
-                                            :key="e.Name + '_' + e.ROLLUP_ID"
+                                            :key="e.Name + '_' + e.ROLLUP_ID + '_' + index"
                                             md="6"
                                         >
                                             <v-currency-field
@@ -160,7 +168,8 @@ export default {
                 excelStructuredData: [],
                 excelStructuredDataBody: [],
                 excelStructuredDataHeaders: []
-            }
+            },
+            showPayPeriodMissingWarning: false
         }
     },
     methods: {
@@ -186,11 +195,27 @@ export default {
             }
         },
         commitToPayroll() {
-            this.updatePayrollEntries( this.entries )
-            this.$router.push('/payroll')
+            if ( this.entries && Array.isArray(this.entries) && this.entries.length > 0 ) {
+                let payroll_entered = true
+                this.entries.forEach( (e) => {
+                    if ( !e.PER_PAY_PERIOD ) {
+                        payroll_entered = false
+                    }
+                })
+                if ( payroll_entered ) {
+                    // Success condition
+                    this.updatePayrollEntries( this.entries )
+                    this.$router.push('/payroll')
+                    return true;
+                }
+            }
+            // Fail condition.
+            this.openPayPeriodMissingWarning()
+            return false;
         },
         editPerPayPeriodSalaries() {
             this.closeDialogs()
+            this.closeAlerts()
             if ( Array.isArray(this.entries) && this.entries.length === 0 ) {
                 this.clonePayrollEntries()
             }
@@ -292,6 +317,18 @@ export default {
             }
             this.entries = []
             return []
+        },
+        closeAlerts() {
+            this.closePayPeriodMissingWarning()
+        },
+        togglePayPeriodMissingWarning() {
+            this.showPayPeriodMissingWarning = !this.showPayPeriodMissingWarning
+        },
+        openPayPeriodMissingWarning() {
+            this.showPayPeriodMissingWarning = true
+        },
+        closePayPeriodMissingWarning() {
+            this.showPayPeriodMissingWarning = false
         }
     },
     computed: {
