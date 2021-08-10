@@ -12,7 +12,7 @@
                         body-message="Purpose of this experiment is to simulate the Payroll Data paste functionality into a tool, so we can start working with the data as a drop in to their workflow."
                     ></test-data-warning>
 
-                    <v-textarea @paste="onPaste($event)" placeholder="Paste Here" class="mt-4"></v-textarea>
+                    <v-textarea @paste="onPaste($event)" placeholder="Paste Here" class="mt-4" v-model="paste.content"></v-textarea>
 
                     <p v-if="hasProperHeaders()">Proper Header Rows Detected!</p>
                     <p v-else>Incorrect Header Rows.</p>
@@ -102,7 +102,7 @@
 
 <script>
 import TestDataWarning from '@/components/TestDataWarning.vue'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 
 export default {
     name: "Excel-Paste",
@@ -174,7 +174,8 @@ export default {
     },
     methods: {
         ...mapMutations({
-            updatePayrollEntries: 'UPDATE_PAYROLL_ENTRIES_FROM_PASTE'
+            updatePayrollEntries: 'UPDATE_PAYROLL_ENTRIES_FROM_PASTE',
+            updatePastedContent: 'UPDATE_PASTED_CONTENT'
         }),
         onPaste(event) {
             let clipboardData = window.clipboardData || event.clipboardData || event.originalEvent && event.originalEvent.clipboardData
@@ -183,7 +184,8 @@ export default {
             let pastedText = clipboardData.getData('Text') || clipboardData.getData('text/plain')
 
             if ( clipboardData && pastedText ) {
-                this.paste.content = pastedText
+                this.updatePastedContent(pastedText)
+                this.paste.content = this.pastedContent
 
                 this.getExcelStructuredData()
 
@@ -332,6 +334,19 @@ export default {
         }
     },
     computed: {
+        ...mapGetters({
+            pastedContent: 'getPastedContent'
+        })
+    },
+    mounted() {
+        this.paste.content = this.pastedContent
+        this.getExcelStructuredData()
+
+        if ( this.hasProperHeaders() ) {
+            this.getExcelStructuredDataWithoutHeaders()
+            this.getExcelStructuredDataHeaders()
+            this.createDataTablesItems()
+        }
     }
 }
 </script>

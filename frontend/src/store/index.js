@@ -194,6 +194,9 @@ const initialState = () => {
     fiscal_encumber_through_dates: {
       payroll: '06/03/2021',
       nine_month_payroll: '05/22/2021'
+    },
+    pasted: {
+      content: ''
     }
   }
 }
@@ -236,6 +239,9 @@ export default new Vuex.Store({
       if ( Array.isArray(val) && val.length > 0 && val[0].ACCT_EXPIRATION_DT ) {
         // state.account.project_end = 
       }
+    },
+    UPDATE_PASTED_CONTENT(state, val) {
+      state.pasted.content = val
     }
   },
   getters: {
@@ -286,6 +292,9 @@ export default new Vuex.Store({
     },
     getFiscalEncumberThroughDateNineMonthPayroll(state) {
       return state.fiscal_encumber_through_dates.nine_month_payroll
+    },
+    getPastedContent(state) {
+      return state.pasted.content
     }
   },
   actions: {
