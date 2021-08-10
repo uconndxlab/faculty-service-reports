@@ -49,7 +49,7 @@
       <v-spacer></v-spacer>
 
       <v-btn
-        href="mailto:dx@uconn.edu"
+        @click="openSupportFeedbackDialog()"
         text
       >
         <span>Support &amp; Feedback</span>
@@ -57,6 +57,9 @@
     </v-app-bar>
 
     <v-main>
+      <support-feedback-dialog
+        ref="support_feedback_dialog"
+      ></support-feedback-dialog>
       <router-view/>
     </v-main>
   </v-app>
@@ -64,16 +67,17 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import SupportFeedbackDialog from '@/components/SupportFeedbackDialog.vue';
 
 export default {
   name: 'App',
-
+  components: { SupportFeedbackDialog },
   data: () => ({
     tools_links: [
       { to: '/pay-period-calculator', name: 'Pay Period Calculator', icon: 'mdi-currency-usd' },
       { to: '/excel-paste', name: 'Excel Paste', icon: 'mdi-content-paste' },
       { to: '/export-pdf', name: 'Export PDF', icon: 'mdi-file-pdf'}
-    ]
+    ],
   }),
   computed: {
     ...mapGetters({
@@ -96,6 +100,11 @@ export default {
         links.push({ to: '/payroll', name: 'Payroll', icon: 'mdi-currency-usd' })
       }
       return links
+    }
+  },
+  methods: {
+    openSupportFeedbackDialog() {
+      this.$refs.support_feedback_dialog.open()
     }
   }
 };
