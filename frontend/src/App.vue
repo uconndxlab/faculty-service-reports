@@ -19,26 +19,21 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-group
-          prepend-icon="mdi-hammer-screwdriver"
-          no-action
-        >
-          <template v-slot:activator>
-            <v-list-item-title>Tools</v-list-item-title>
-          </template>
+        <v-divider></v-divider>
 
-          <v-list-item
+        <v-subheader class="pl-4">TOOLS</v-subheader>
+
+        <v-list-item
             v-for="tl in tools_links"
             :key="tl.name"
             link
             :to="tl.to"
           >
-            <v-list-item-title v-text="tl.name"></v-list-item-title>
             <v-list-item-icon>
               <v-icon>{{ tl.icon }}</v-icon>
             </v-list-item-icon>
+            <v-list-item-title v-text="tl.name"></v-list-item-title>
           </v-list-item>
-        </v-list-group>
       </v-list>
     </v-navigation-drawer>
 

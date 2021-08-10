@@ -231,6 +231,11 @@ export default new Vuex.Store({
         })
         state.account.transaction_categories.salary.transactions = new_vals
       }
+    },
+    UPDATE_ACCOUNT_END_DATE_FROM_PASTE(state, val) {
+      if ( Array.isArray(val) && val.length > 0 && val[0].ACCT_EXPIRATION_DT ) {
+        // state.account.project_end = 
+      }
     }
   },
   getters: {
