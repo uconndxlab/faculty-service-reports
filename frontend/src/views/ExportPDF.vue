@@ -19,30 +19,87 @@
                     >Generate PDF</v-btn>
 
                     <div class="preview">
-                        <ul id="buckets_list">
-                            <li
-                                v-for="(buck, i) in buckets"
-                                :key="i"
-                            >
-                                Name: {{ buck.name }}; Price: ${{ buck.price }}
-                            </li>
-                        </ul>
-                        <ul id="riley_list">
-                            <li
-                                v-for="(ri, j) in riley"
-                                :key="j"
-                            >
-                                Riley: {{ ri.jonsey }}
-                            </li>
-                        </ul>
-                        <ul id="get_after_it">
-                            <li
-                                v-for="(gai, k) in get_after_it"
-                                :key="k"
-                            >
-                                Wayne: {{ gai.wayne }}
-                            </li>
-                        </ul>
+                        <div class="account-monthly-transaction-details">
+                            <h2>Account Monthly Transaction Details</h2>
+
+                            <!-- Salary Entries (NOT FRINGE) -->
+                            <v-simple-table v-if="accountSalaryEntries" dense class="mb-4">
+                                <template v-slot:default>
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">Object Code</th>
+                                            <th class="text-left">Object Description</th>
+                                            <th class="text-left">Entry Description</th>
+                                            <th class="text-left">Actual</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            v-for="(tx, index) in accountSalaryEntries"
+                                            :key="'sal' + index"
+                                        >
+                                            <td class="text-left">{{ tx.object_code }}</td>
+                                            <td class="text-left">{{ getPayrollLabel(tx.object_code) }}</td>
+                                            <td class="text-left">PAY PERIOD - {{ tx.person }}</td>
+                                            <td class="text-right">{{ tx.per_pay_period | currency }}</td>
+                                        </tr>
+                                        <tr
+                                            v-for="code in uniqueSalaryObjectCodes"
+                                            :key="code"
+                                            class="light-background-accent"
+                                        >
+                                            <td class="text-left" :colspan="wideCellColSpan">Total {{ code }}</td>
+                                            <td class="text-right">{{getObjectCodeTotal(code) | currency }}</td>
+                                        </tr>
+                                        <tr class="light-blue-background-accent">
+                                            <td class="text-left" :colspan="wideCellColSpan">Total Salary</td>
+                                            <td class="text-right">{{ salaryTotal | currency }}</td>
+                                        </tr>
+                                    </tbody>
+                                </template>
+                            </v-simple-table>
+
+                            <!-- Fringe Entries (NOT SALARY) -->
+                            <v-simple-table v-if="accountSalaryFringeEntries" dense>
+                                <template v-slot:default>
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">Object Code</th>
+                                            <th class="text-left">Object Description</th>
+                                            <th class="text-left">Entry Description</th>
+                                            <th class="text-left">Actual</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            v-for="(tx, index) in accountSalaryFringeEntries"
+                                            :key="'sal' + index"
+                                        >
+                                            <td class="text-left">{{ tx.object_code }}</td>
+                                            <td class="text-left">{{ getPayrollLabel(tx.object_code) }}</td>
+                                            <td class="text-left">PAY PERIOD - {{ tx.person }}</td>
+                                            <td class="text-right">{{ tx.per_pay_period | currency }}</td>
+                                        </tr>
+                                        <tr
+                                            v-for="code in uniqueFringeObjectCodes"
+                                            :key="code"
+                                            class="light-background-accent"
+                                        >
+                                            <td class="text-left" :colspan="wideCellColSpan">Total {{ code }}</td>
+                                            <td class="text-right">{{getObjectCodeTotal(code) | currency }}</td>
+                                        </tr>
+                                        <tr class="light-blue-background-accent">
+                                            <td class="text-left" :colspan="wideCellColSpan">Total Fringe</td>
+                                            <td class="text-right">{{ fringeTotal | currency }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left" :colspan="wideCellColSpan"><strong>Total Direct Costs</strong></td>
+                                            <td class="text-right">{{ totalDirectCosts | currency }}</td>
+                                        </tr>
+                                    </tbody>
+                                </template>
+                            </v-simple-table>
+                        </div>
                     </div>
                 </v-col>
             </v-row>
@@ -54,72 +111,165 @@
 <script>
 import { jsPDF } from "jspdf"
 import TestDataWarning from '@/components/TestDataWarning.vue'
+import { mapGetters } from 'vuex'
+import { getPayrollLabelForCode } from '@/lib/payrollCodes'
 
 export default {
     components: { TestDataWarning },
     data: () => ({
-        buckets: [
-            { name: 'BK', price: "12.89" },
-            { name: 'KB', price: "14.90" },
-            { name: 'BBKK', price: "22.70" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" },
-            { name: 'JK', price: "0.80" }
-        ],
-        riley: [
-            { jonsey: 'Abc123' },
-            { jonsey: 'cca21' },
-            { jonsey: 'faaafaa' }
-        ],
-        get_after_it: [
-            { wayne: 'how are ya now' },
-            { wayne: 'good n you' },
-            { wayne: 'not so bad' },
-            { wayne: 'chorin' }
-        ]
+        wideCellColSpan: 3
     }),
+    computed: {
+        ...mapGetters({
+            account: 'getAccount'
+        }),
+        accountSalaryEntries() {
+            return this.account.transaction_categories.salary.transactions.filter( (val) => {
+                return !val.fringe
+            })
+        },
+        accountSalaryFringeEntries() {
+            return this.account.transaction_categories.salary.transactions.filter( (val) => {
+                return val.fringe
+            })
+        },
+        uniqueSalaryObjectCodes() {
+            return this.accountSalaryEntries.map( (tx) => tx.object_code )
+                .filter((val, index, self) => self.indexOf(val) === index)
+        },
+        salaryTotal() {
+            const monthly_values = this.accountSalaryEntries.map( (tx) => tx.per_pay_period )
+            return monthly_values.reduce( (a,b) => a+b, 0 )
+        },
+        uniqueFringeObjectCodes() {
+            return this.accountSalaryFringeEntries.map( (tx) => tx.object_code )
+                .filter((val, index, self) => self.indexOf(val) === index)
+        },
+        fringeTotal() {
+            const monthly_values = this.accountSalaryFringeEntries.map( (tx) => tx.per_pay_period )
+            return monthly_values.reduce( (a,b) => a+b, 0 )
+        },
+        totalDirectCosts() {
+            return this.salaryTotal + this.fringeTotal
+        }
+    },
     methods: {
         writePDF() {
             const doc = new jsPDF({ 
                 orientation: 'landscape'
             })
-            doc.table(1, 1, this.buckets, [{ id: 'name', name: 'name', prompt: 'name', width: 65, align: "center" }, { id: 'price', name: 'price', prompt: 'price', width: 65, align: "center" }])
-            doc.addPage('', 'l')
-            doc.table(1, 1, this.riley, [{ id: 'jonsey', name: 'jonsey', prompt: 'jonsey', width: 65, align: "center" }])
-            doc.save('report.pdf')
+            console.log(doc)
+            // .table( x, y, data, headers, config )
+            doc.table(1, 1, this.accountMonthlyTransactionDetailsCreateFlatTableStructure(), [
+                {
+                    id: 'object_code',
+                    name: 'object_code',
+                    prompt: 'Object Code',
+                    align: 'left',
+                    width: 50
+                },
+                {
+                    id: 'object_description',
+                    name: 'object_description',
+                    prompt: 'Object Description',
+                    align: 'left',
+                    width: 100
+                },
+                {
+                    id: 'entry_description',
+                    name: 'entry_description',
+                    prompt: 'Entry Description',
+                    align: 'left',
+                    width: 110
+                },
+                {
+                    id: 'actual',
+                    name: 'actual',
+                    prompt: 'Actual',
+                    align: 'right',
+                    width: 50
+                }
+            ], {
+                fontSize: 8
+            })
+            doc.save('fsr-test.pdf')
+        },
+        getPayrollLabel(code) {
+            return getPayrollLabelForCode(code)
+        },
+        getObjectCodeTotal(code) {
+            let total = 0
+            this.account.transaction_categories.salary.transactions.forEach( (entry) => {
+                if ( entry.object_code == code ) {
+                    total += entry.per_pay_period
+                }
+            })
+            return total
+        },
+        accountMonthlyTransactionDetailsCreateFlatTableStructure() {
+            let data = []
+            this.accountSalaryEntries.forEach( (val) => {
+                data.push({
+                    object_code: val.object_code,
+                    object_description: this.getPayrollLabel(val.object_code),
+                    entry_description: 'PAY PERIOD_ - ' +  val.person,
+                    actual: this.$options.filters.currency(val.per_pay_period)
+                })
+            })
+            this.uniqueSalaryObjectCodes.forEach( (val) => {
+                data.push({
+                    object_code: 'Total ' + val,
+                    object_description: ' ',
+                    entry_description: ' ',
+                    actual: this.$options.filters.currency(this.getObjectCodeTotal(val))
+                })
+            })
+            data.push({
+                object_code: 'Total Salary',
+                object_description: ' ',
+                entry_description: ' ',
+                actual: this.$options.filters.currency(this.salaryTotal)
+            })
+            this.accountSalaryFringeEntries.forEach( (val) => {
+                data.push({
+                    object_code: val.object_code,
+                    object_description: this.getPayrollLabel(val.object_code),
+                    entry_description: 'PAY PERIOD_ - ' +  val.person,
+                    actual: this.$options.filters.currency(val.per_pay_period)
+                })
+            })
+            this.uniqueFringeObjectCodes.forEach( (val) => {
+                data.push({
+                    object_code: 'Total ' + val,
+                    object_description: ' ',
+                    entry_description: ' ',
+                    actual: this.$options.filters.currency(this.getObjectCodeTotal(val))
+                })
+            })
+            data.push({
+                object_code: 'Total Fringe Benefits',
+                object_description: ' ',
+                entry_description: ' ',
+                actual: this.$options.filters.currency(this.fringeTotal)
+            })
+            data.push({
+                object_code: 'Total Direct Costs',
+                object_description: ' ',
+                entry_description: ' ',
+                actual: this.$options.filters.currency(this.totalDirectCosts)
+            })
+            return data
         }
     }
 }
 </script>
+
+<style scoped>
+.light-background-accent {
+    background-color: #eee;
+}
+
+.light-blue-background-accent {
+    background-color: rgb(202, 206, 252);
+}
+</style>
