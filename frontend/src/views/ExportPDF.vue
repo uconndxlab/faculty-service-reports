@@ -14,7 +14,8 @@
                     ></test-data-warning>
 
                     <v-btn
-                        type="primary"
+                        color="primary"
+                        class="mt-4 mb-4"
                         @click="writePDF()"
                     >Generate PDF</v-btn>
 
