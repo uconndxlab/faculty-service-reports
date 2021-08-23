@@ -19,6 +19,52 @@
                                 validate-on-blur
                             ></v-text-field>
 
+                            <v-menu
+                                ref="report_date_menu"
+                                v-model="report_date_menu_open"
+                                :close-on-content-click="false"
+                                :return-value.sync="report_date"
+                                transition="scale-transition"
+                                offset-y
+                                max-width="290px"
+                                min-width="auto"
+                            >
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                        v-model="report_date"
+                                        label="Report Date"
+                                        prepend-icon="mdi-calendar"
+                                        readonly
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    ></v-text-field>
+                                </template>
+
+                                <v-date-picker
+                                    v-model="report_date"
+                                    type="month"
+                                    class="mt-4"
+                                    min="2020-01"
+                                    :max="maximumDate"
+                                >
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        text
+                                        color="primary"
+                                        @click="report_date_menu_open = false"
+                                    >
+                                        Cancel
+                                    </v-btn>
+                                    <v-btn
+                                        text
+                                        color="primary"
+                                        @click="$refs.report_date_menu.save(report_date)"
+                                    >
+                                        OK
+                                    </v-btn>
+                                </v-date-picker>
+                            </v-menu>
+
                             <v-btn
                                 color="primary"
                                 :loading="lookup_button_loading"
@@ -46,6 +92,8 @@ import { mapMutations, mapGetters } from 'vuex'
 export default {
     data: () => ({
         account_number: '',
+        report_date: '2021-01',
+        report_date_menu_open: false,
         account_number_validation_rules: [
             v => !!v || 'Account Number is required',
             v => (v && v.length > 6) || 'Please Enter a valid Account Number'
@@ -55,16 +103,27 @@ export default {
     computed: {
         ...mapGetters({
             last_account_number: 'getAccountNumber'
-        })
+        }),
+        maximumDate() {
+            let d = new Date()
+            let m = d.getMonth() + 1
+            if ( m < 10 ) {
+                m = '0' + m
+            } else {
+                m = `${m}`
+            }
+            return `${d.getFullYear()}-${m}`
+        }
     },
     methods: {
-        ...mapMutations(['ASSIGN_ACCOUNT_NUMBER']),
+        ...mapMutations(['ASSIGN_ACCOUNT_NUMBER', 'ASSIGN_REPORT_DATE']),
         navigateToAccount() {
             this.lookup_button_loading = true
             setTimeout(() => {
                 let valid = this.enterAccountNumberFormValid()
                 if ( valid ) {
                     this.ASSIGN_ACCOUNT_NUMBER(this.account_number)
+                    this.ASSIGN_REPORT_DATE(this.report_date)
                     this.lookup_button_loading = false
                     this.$router.push({
                         name: 'account',

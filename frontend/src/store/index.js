@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-labels,no-unused-vars */
 import Vue from 'vue'
 import Vuex from 'vuex'
+import dayjs from 'dayjs'
 
 Vue.use(Vuex)
 
@@ -206,6 +207,13 @@ export default new Vuex.Store({
   mutations: {
     ASSIGN_ACCOUNT_NUMBER(state, val) {
       state.account.number = val
+    },
+    ASSIGN_REPORT_DATE(state, val) {
+      // val should be in YYYY-MM format
+      let split = val.split('-')
+      let daysInMonth = dayjs(`${split[0]}-${split[1]}-01`).daysInMonth()
+      state.account.date.start = `${split[1]}/01/${split[0]}`
+      state.account.date.end = `${split[1]}/${daysInMonth}/${split[0]}`
     },
     UPDATE_GRAD_PAY_PERIOD(state, val) {
       state.account.pay_periods_remaining.grad = val

@@ -120,6 +120,7 @@
                         :items="payrollEntries"
                         :items-per-page="20"
                         :hide-default-footer="true"
+                        dense
                     >
                         <template v-slot:[`item.outstanding_encum`]="{ item }">
                             {{ item.outstanding_encum | currency }}
