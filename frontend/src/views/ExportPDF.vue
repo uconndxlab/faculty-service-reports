@@ -16,11 +16,11 @@
                     <v-btn
                         color="primary"
                         class="mt-4 mb-4"
-                        @click="writePDF()"
+                        @click="writePDFfromHTML()"
                     >Generate PDF</v-btn>
 
                     <div class="preview">
-                        <div class="account-monthly-transaction-details">
+                        <div id="account-monthly-transaction-details" class="account-monthly-transaction-details">
                             <h2>Account Monthly Transaction Details</h2>
 
                             <!-- Salary Entries (NOT FRINGE) -->
@@ -194,6 +194,25 @@ export default {
                 fontSize: 8
             })
             doc.save('fsr-test.pdf')
+        },
+        writePDFfromHTML() {
+            const doc = new jsPDF({ 
+                orientation: 'landscape'
+            })
+            // const elementHandler = {
+            //     '#ignorePDF': () => {
+            //         return true
+            //     }
+            // }
+            const source = window.document.getElementById('account-monthly-transaction-details')
+            doc.html( source, {
+                html2canvas: {
+                    scale: 0.2
+                },
+                callback: (doc) => {
+                    doc.save('fsr-test-html.pdf')
+                }
+            })
         },
         getPayrollLabel(code) {
             return getPayrollLabelForCode(code)
