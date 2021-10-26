@@ -3,7 +3,6 @@ node_modules
 /dist
 app
 
-
 # local env files
 .env.local
 .env.*.local
@@ -26,3 +25,10 @@ pnpm-debug.log*
 
 # Local Deploy Scripts
 deploy.sh
+
+
+# Backend Folder Specific
+backend/vendor/*
+backend/mounts/*
+!backend/vendor/.KEEP
+!backend/mounts/.KEEP
