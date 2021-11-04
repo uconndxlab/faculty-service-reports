@@ -67,45 +67,45 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import SupportFeedbackDialog from '@/components/SupportFeedbackDialog.vue';
+import SupportFeedbackDialog from '@/components/SupportFeedbackDialog.vue'
 
 export default {
-  name: 'App',
-  components: { SupportFeedbackDialog },
-  data: () => ({
-    tools_links: [
-      { to: '/pay-period-calculator', name: 'Pay Period Calculator', icon: 'mdi-currency-usd' },
-      { to: '/excel-paste', name: 'Excel Paste', icon: 'mdi-content-paste' },
-      { to: '/export-pdf', name: 'Export PDF', icon: 'mdi-file-pdf'}
-    ],
-  }),
-  computed: {
-    ...mapGetters({
-      account_number: 'getAccountNumber'
+    name: 'App',
+    components: { SupportFeedbackDialog },
+    data: () => ({
+        tools_links: [
+            { to: '/pay-period-calculator', name: 'Pay Period Calculator', icon: 'mdi-currency-usd' },
+            { to: '/excel-paste', name: 'Excel Paste', icon: 'mdi-content-paste' },
+            { to: '/export-pdf', name: 'Export PDF', icon: 'mdi-file-pdf'}
+        ],
     }),
-    accountCurrentlyRegistered() {
-      return !!this.account_number
+    computed: {
+        ...mapGetters({
+            account_number: 'getAccountNumber'
+        }),
+        accountCurrentlyRegistered() {
+            return !!this.account_number
+        },
+        navigationLinks() {
+            let links = [
+                { to: '/', name: 'Home', icon: 'mdi-home' }
+            ]
+            if ( this.account_number ) {
+                let account_routes = [
+                    { to: '/account/' + this.account_number, name: 'Account Summary', icon: 'mdi-view-dashboard' },
+                    { to: '/payroll', name: 'Payroll', icon: 'mdi-currency-usd' }
+                ]
+                links.push(...account_routes)
+            } else {
+                links.push({ to: '/payroll', name: 'Payroll', icon: 'mdi-currency-usd' })
+            }
+            return links
+        }
     },
-    navigationLinks() {
-      let links = [
-        { to: '/', name: 'Home', icon: 'mdi-home' }
-      ]
-      if ( this.account_number ) {
-        let account_routes = [
-          { to: '/account/' + this.account_number, name: 'Account Summary', icon: 'mdi-view-dashboard' },
-          { to: '/payroll', name: 'Payroll', icon: 'mdi-currency-usd' }
-        ]
-        links.push(...account_routes)
-      } else {
-        links.push({ to: '/payroll', name: 'Payroll', icon: 'mdi-currency-usd' })
-      }
-      return links
+    methods: {
+        openSupportFeedbackDialog() {
+            this.$refs.support_feedback_dialog.open()
+        }
     }
-  },
-  methods: {
-    openSupportFeedbackDialog() {
-      this.$refs.support_feedback_dialog.open()
-    }
-  }
-};
+}
 </script>

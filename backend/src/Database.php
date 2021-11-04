@@ -4,8 +4,14 @@ namespace FacultyServiceReports\Backend;
 
 class Database {
 
-    public static function create($username, $password, $connection_string, $encoding = "", $session_mode = OCI_DEFAULT) {
-        return oci_connect($username, $password, $connection_string, $encoding, $session_mode);
+    public static function create() {
+        return oci_connect(
+            $_ENV['DB_USER'],
+            $_ENV['DB_PASS'],
+            $_ENV['DB_CONN'],
+            null,
+            OCI_SYSDBA
+        );
     }
 
 }

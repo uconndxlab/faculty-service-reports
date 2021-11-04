@@ -283,33 +283,33 @@ export default {
         },
         additionalPayPeriodsToEndofGrant( item ) {
             switch ( item.object_code ) {
-                // Regular Payroll - Faculty (can be 9, 10, 11 month)
-                case "5111":
-                    break;
+            // Regular Payroll - Faculty (can be 9, 10, 11 month)
+            case "5111":
+                break
                 // Regular Payroll - Other Professional (12 Month Employees)
-                case "5112":
-                    break;
+            case "5112":
+                break
                 // Payroll - Contractual
-                case "5231":
-                    break;
+            case "5231":
+                break
                 // Payroll - Faculty Summer (can earn 3, 2, or 1 month of pay)
-                case "5232":
-                    break;
+            case "5232":
+                break
                 // Payroll - Student Labor
-                case "5240":
-                    break;
+            case "5240":
+                break
                 // Grads (AY only 8/23 to 5/22, paid in summer on 5231.  Not paid 2 weeks behind.)
-                case "5250":
-                    return this.zeroOrGreater(+(
-                        this.nineMonthPayPeriodsRemainingToEncumber
+            case "5250":
+                return this.zeroOrGreater(+(
+                    this.nineMonthPayPeriodsRemainingToEncumber
                         - this.payPeriodsCurrentlyEncumbered(item)
-                    ).toPrecision(3))
+                ).toPrecision(3))
                 // Payroll - Post Doctors
-                case "5260":
-                    return this.zeroOrGreater(+(
-                        this.nineMonthPayPeriodsRemainingToEncumber
+            case "5260":
+                return this.zeroOrGreater(+(
+                    this.nineMonthPayPeriodsRemainingToEncumber
                         - this.payPeriodsCurrentlyEncumbered(item)
-                    ).toPrecision(3))
+                ).toPrecision(3))
             }
 
             // @TODO Should return the calculation versus the number to grant end or fiscal year end, whichever is first, I think.

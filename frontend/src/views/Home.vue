@@ -5,13 +5,13 @@
 </template>
 
 <script>
-  import EnterAccountNumber from '../components/EnterAccountNumber'
+import EnterAccountNumber from '../components/EnterAccountNumber'
 
-  export default {
+export default {
     name: 'Home',
 
     components: {
-      EnterAccountNumber,
+        EnterAccountNumber,
     },
-  }
+}
 </script>

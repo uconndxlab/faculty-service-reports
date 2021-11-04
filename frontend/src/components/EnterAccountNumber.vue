@@ -135,7 +135,7 @@ export default {
                     console.log('Not Valid')
                     this.lookup_button_loading = false
                 }
-            }, 600);
+            }, 600)
         },
         enterAccountNumberFormValid() {
             if ( this.$refs && this.$refs.enter_account_number_form ) {

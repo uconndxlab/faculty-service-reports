@@ -13,19 +13,19 @@ Vue.config.productionTip = false
 
 Vue.component('v-text-field', VTextField)
 Vue.use(VCurrencyField, {
-  currency: 'USD',
-  locale: 'en',
-  decimalLength: 2,
-  autoDecimalMode: true,
-  min: null,
-  max: null,
-  defaultValue: 0,
-  allowNegative: true
+    currency: 'USD',
+    locale: 'en',
+    decimalLength: 2,
+    autoDecimalMode: true,
+    min: null,
+    max: null,
+    defaultValue: 0,
+    allowNegative: true
 })
 
 new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
+    router,
+    store,
+    vuetify,
+    render: h => h(App)
 }).$mount('#app')

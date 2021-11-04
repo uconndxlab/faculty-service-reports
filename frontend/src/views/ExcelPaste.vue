@@ -208,12 +208,12 @@ export default {
                     // Success condition
                     this.updatePayrollEntries( this.entries )
                     this.$router.push('/payroll')
-                    return true;
+                    return true
                 }
             }
             // Fail condition.
             this.openPayPeriodMissingWarning()
-            return false;
+            return false
         },
         editPerPayPeriodSalaries() {
             this.closeDialogs()
@@ -247,8 +247,8 @@ export default {
         // This function is bonkers, sorry people.
         getExcelStructuredData() {
             if ( !this.paste.content ) {
-                this.paste.excelStructuredData = [];
-                return false;
+                this.paste.excelStructuredData = []
+                return false
             }
             // In plain english, first we need to parse out new lines into rows, however we want to avoid a situation where there were newlines in actual excel content.
             // For this purpose, we find new lines within quotes and replace them with spaces.
@@ -266,7 +266,7 @@ export default {
                 return val.split(/\t/g)
             })
             this.paste.excelStructuredData = row_data_with_cols
-            return true;
+            return true
         },
 
         hasProperHeaders() {
