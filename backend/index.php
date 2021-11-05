@@ -3,6 +3,7 @@
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
+use FacultyServiceReports\Backend\Database;
 use FacultyServiceReports\Backend\Classes\ACCT_T;
 use FacultyServiceReports\Backend\EnvironmentLoader;
 
@@ -19,8 +20,9 @@ try {
 $app = AppFactory::create();
 
 $app->get('/', function(Request $request, Response $response, $args) {
-    $res = ACCT_T::get_all();
-    $payload = json_encode($res, JSON_PRETTY_PRINT);
+    $d = Database::create();
+    echo $d;
+    $payload = json_encode(['val' => 'val'], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 });
