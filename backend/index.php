@@ -7,6 +7,7 @@ use FacultyServiceReports\Backend\Database;
 use FacultyServiceReports\Backend\Classes\ACCT_T;
 use FacultyServiceReports\Backend\Classes\FS_ACCT_SUMMARY_T;
 use FacultyServiceReports\Backend\Classes\FS_ACCT_TOP_SUMM_T;
+use FacultyServiceReports\Backend\Classes\FS_CURRENT_FY;
 use FacultyServiceReports\Backend\EnvironmentLoader;
 
 require __DIR__ . '/vendor/autoload.php';
@@ -65,6 +66,22 @@ $app->get('/fs_acct_summary/{account_nbr}', function(Request $request, Response 
 /** FS_ACCT_TOP_SUMM_T */
 $app->get('/fs_acct_top_summ', function(Request $request, Response $response, $args) {
     $res = FS_ACCT_TOP_SUMM_T::get_all();
+    $payload = json_encode($res, JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$app->get('/fs_acct_top_summ/{account_nbr}', function(Request $request, Response $response, $args) {
+    $res = FS_ACCT_TOP_SUMM_T::get_all_by_account_nbr($args['account_nbr']);
+    $payload = json_encode($res, JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+
+/** FS_CURRENT_FY */
+$app->get('/fs_current_fy', function(Request $request, Response $response, $args) {
+    $res = FS_CURRENT_FY::get();
     $payload = json_encode($res, JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
