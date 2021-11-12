@@ -1,9 +1,10 @@
 <?php
+
 namespace FacultyServiceReports\Backend\Classes;
 
 use FacultyServiceReports\Backend\Database;
 
-class ACCT_T {
+class FS_ACCT_TOP_SUMM_T {
 
     public static function get_all($offset = 0, $limit = 100) {
         $db = Database::create();
@@ -14,7 +15,7 @@ class ACCT_T {
             return [];
         }
 
-        $statement = 'SELECT * FROM FIN_REPORTING.ACCT_T';
+        $statement = 'SELECT * FROM FIN_REPORTING.FS_ACCT_TOP_SUMM_T';
 
         $stid = oci_parse($db, $statement);
         oci_execute($stid);
@@ -24,7 +25,7 @@ class ACCT_T {
         return $res;
     }
 
-    public static function get_by_account_nbr($nbr) {
+    public static function get_all_by_account_nbr($nbr, $offset = 0, $limit = 100) {
         $db = Database::create();
 
         if ( !$db ) {
@@ -33,19 +34,15 @@ class ACCT_T {
             return [];
         }
 
-        $statement = 'SELECT * FROM FIN_REPORTING.ACCT_T WHERE ACCOUNT_NBR = :p1';
+        $statement = 'SELECT * FROM FIN_REPORTING.FS_ACCT_TOP_SUMM_T WHERE ACCOUNT_NBR = :p1';
 
         $stid = oci_parse($db, $statement);
         oci_bind_by_name($stid, ':p1', $nbr);
         oci_execute($stid);
 
-        $row = oci_fetch_assoc($stid);
+        $nrows = oci_fetch_all($stid, $res, $offset, $limit, OCI_FETCHSTATEMENT_BY_ROW);
 
-        if ( $row ) {
-            return $row;
-        }
-
-        return new stdClass();
+        return $res;
     }
 
 }

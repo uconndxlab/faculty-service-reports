@@ -5,6 +5,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 use FacultyServiceReports\Backend\Database;
 use FacultyServiceReports\Backend\Classes\ACCT_T;
+use FacultyServiceReports\Backend\Classes\FS_ACCT_SUMMARY_T;
+use FacultyServiceReports\Backend\Classes\FS_ACCT_TOP_SUMM_T;
 use FacultyServiceReports\Backend\EnvironmentLoader;
 
 require __DIR__ . '/vendor/autoload.php';
@@ -27,6 +29,8 @@ $app->get('/', function(Request $request, Response $response, $args) {
     return $response->withHeader('Content-Type', 'application/json');
 });
 
+
+/** ACCT_T */
 $app->get('/acct', function(Request $request, Response $response, $args) {
     $res = ACCT_T::get_all();
     $payload = json_encode($res, JSON_PRETTY_PRINT);
@@ -36,6 +40,31 @@ $app->get('/acct', function(Request $request, Response $response, $args) {
 
 $app->get('/acct/{account_nbr}', function(Request $request, Response $response, $args) {
     $res = ACCT_T::get_by_account_nbr($args['account_nbr']);
+    $payload = json_encode($res, JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+
+/** FS_ACCT_SUMMARY_T */
+$app->get('/fs_acct_summary', function(Request $request, Response $response, $args) {
+    $res = FS_ACCT_SUMMARY_T::get_all();
+    $payload = json_encode($res, JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$app->get('/fs_acct_summary/{account_nbr}', function(Request $request, Response $response, $args) {
+    $res = FS_ACCT_SUMMARY_T::get_all_by_account_nbr($args['account_nbr']);
+    $payload = json_encode($res, JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+
+/** FS_ACCT_TOP_SUMM_T */
+$app->get('/fs_acct_top_summ', function(Request $request, Response $response, $args) {
+    $res = FS_ACCT_TOP_SUMM_T::get_all();
     $payload = json_encode($res, JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
