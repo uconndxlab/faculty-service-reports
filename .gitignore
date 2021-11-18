@@ -33,3 +33,6 @@ backend/vendor/*
 backend/mounts/*
 !backend/vendor/.KEEP
 !backend/mounts/.KEEP
+
+# Random Notes
+random

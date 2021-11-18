@@ -45,7 +45,7 @@ class ACCT_T {
             return $row;
         }
 
-        return new stdClass();
+        return new \stdClass();
     }
 
 }

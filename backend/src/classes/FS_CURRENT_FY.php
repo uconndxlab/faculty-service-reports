@@ -26,7 +26,7 @@ class FS_CURRENT_FY {
             return $row;
         }
 
-        return new stdClass();
+        return new \stdClass();
     }
 
 }

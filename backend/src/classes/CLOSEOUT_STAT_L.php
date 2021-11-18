@@ -46,7 +46,7 @@ class CLOSEOUT_STAT_L {
             return $row;
         }
 
-        return new stdClass();
+        return new \stdClass();
     }
 
 }

@@ -88,6 +88,8 @@
 
 <script>
 import { mapMutations, mapGetters } from 'vuex'
+import axios from 'axios'
+import { API_URL } from '@/lib/api.js'
 
 export default {
     data: () => ({
@@ -119,23 +121,43 @@ export default {
         ...mapMutations(['ASSIGN_ACCOUNT_NUMBER', 'ASSIGN_REPORT_DATE']),
         navigateToAccount() {
             this.lookup_button_loading = true
-            setTimeout(() => {
-                let valid = this.enterAccountNumberFormValid()
-                if ( valid ) {
-                    this.ASSIGN_ACCOUNT_NUMBER(this.account_number)
-                    this.ASSIGN_REPORT_DATE(this.report_date)
-                    this.lookup_button_loading = false
-                    this.$router.push({
-                        name: 'account',
-                        params: {
-                            acc_num: this.account_number
+            let valid = this.enterAccountNumberFormValid()
+            if ( !valid ) {
+                this.lookup_button_loading = false
+                console.error('Form was submitted, but was not valid.')
+            } else {
+                axios( API_URL + '/acct/' + this.account_number )
+                    .then( (response) => {
+                        console.log(response)
+                        if ( response.data === {} ) {
+                            this.$emit('apiError', 'There is no account with this number.')
                         }
+                        this.lookup_button_loading = false
                     })
-                } else {
-                    console.log('Not Valid')
-                    this.lookup_button_loading = false
-                }
-            }, 600)
+                    .catch( (error) => {
+                        console.log('axios error:')
+                        console.log(error)
+                        this.$emit('apiError', 'Error retrieving account information.  The account number might not be valid.')
+                    })
+            }
+            
+            // setTimeout(() => {
+            //     let valid = this.enterAccountNumberFormValid()
+            //     if ( valid ) {
+            //         this.ASSIGN_ACCOUNT_NUMBER(this.account_number)
+            //         this.ASSIGN_REPORT_DATE(this.report_date)
+            //         this.lookup_button_loading = false
+            //         this.$router.push({
+            //             name: 'account',
+            //             params: {
+            //                 acc_num: this.account_number
+            //             }
+            //         })
+            //     } else {
+            //         console.log('Not Valid')
+            //         this.lookup_button_loading = false
+            //     }
+            // }, 600)
         },
         enterAccountNumberFormValid() {
             if ( this.$refs && this.$refs.enter_account_number_form ) {

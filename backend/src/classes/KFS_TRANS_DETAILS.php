@@ -46,7 +46,7 @@ class KFS_TRANS_DETAILS {
             return $row;
         }
 
-        return new stdClass();
+        return new \stdClass();
     }
 
 }

@@ -3,6 +3,7 @@
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
+use DI\Container;
 use FacultyServiceReports\Backend\Database;
 use FacultyServiceReports\Backend\Classes\ACCT_CLOSEOUT_STAT_T;
 use FacultyServiceReports\Backend\Classes\ACCT_CLOSEOUT_T;
@@ -30,6 +31,16 @@ try {
     exit(1);
 }
 
+$container = new Container();
+$container->set('phpErrorHandler', function($container) {
+    return function ($request, $response, $error) use ($container) {
+        $payload = json_encode(['error' => 'Issue retrieving database records.  Please check you are looking up with a valid ID.']);
+        return $response->withStatus(500)
+            ->withHeader('Content-Type', 'application/json')
+            ->write($payload);
+    };
+});
+AppFactory::setContainer($container);
 $app = AppFactory::create();
 
 $app->get('/', function(Request $request, Response $response, $args) {
@@ -274,5 +285,8 @@ $app->get('/proposals/{projid}', function(Request $request, Response $response, 
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 });
+
+/** @TODO Change this to approved list. */
+header("Access-Control-Allow-Origin: *");
 
 $app->run();
